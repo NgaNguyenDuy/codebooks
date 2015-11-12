@@ -77,8 +77,62 @@
 ;; 6. What could occur in place of the x in each of the following exchanges?
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(car (x (cdr '(a (b c) d)))) ;; Should return B so x is "car" operator. Let me explain it. We will evaluate from innermost, which the value of (cdr '(a (b c) d)) returns, its value is ((b c) d). So, we need the element has contain B, and the first element of the value has contain it (B), so we must using the car operator to get it. Finally, we will get B element.
+;; (car (x (cdr '(a (b c) d)))) ;; Should return B so x is "car" operator. Let me explain it. We will evaluate from innermost, which the value of (cdr '(a (b c) d)) returns, its value is ((b c) d). So, we need the element has contain B, and the first element of the value has contain it (B), so we must using the car operator to get it. Finally, we will get B element.
 
-(x 13 (/ 1 0)) ;; Should return 13 so x must be "or" operator. Because the expression (/1 0) always return false, so if we using the "and" operator, it will return nil.
+;; (x 13 (/ 1 0)) ;; Should return 13 so x must be "or" operator. Because the expression (/1 0) always return false, so if we using the "and" operator, it will return nil.
 
-(x #'list 1 nil) ;; Should return (1). At here, we have two choice for x, the first is apply, and the second is funcall. Two functions is same but there is a difference, that is "apply" will take a function and a list of arguments for it, and "funcall" does not need the arguments to be packaged in a list. So, at here, we have not arguments packaged in a list and we will using "funcall" for x.
+;; (x #'list 1 nil) ;; Should return (1). At here, we have two choice for x, the first is apply, and the second is funcall. Two functions is same but there is a difference, that is "apply" will take a function and a list of arguments for it, and "funcall" does not need the arguments to be packaged in a list. So, at here, we have not arguments packaged in a list and we will using "funcall" for x.
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 7. Using only operations introduced in this chapter, define a function that
+;; takes a list as an argument and return true if one its elements is a list.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; check_list(): list -> boolean
+
+(defun check_list (lst)
+  "Return true if lst has a list."
+  (if (null lst)
+      nil
+      (if (listp (car lst))
+          t
+          (check_list (cdr lst)))
+      ))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 9. A friend is trying to write function that returns the sum of all the
+;; non-nil elements in a list. He was written two versions of this function,
+;; and neither of them work. Explain what's wrong witch each, and give a
+;; correct version.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; First version:
+;; (a) (defun summit (1st)
+;;       (remove nil 1st)
+;;       (apply #'+ 1st))
+
+;; What's wrong? The arguments of apply function must be a list. 1st is a list. But the function + must require all of elements must be a number. So we can modify it as bellow:
+(defun summit_new_ver (1st)
+  "Return the sum of all the non-nin elements in a list."
+  (length (remove nil 1st)))
+
+;; Second version:
+;; (b) (defun summit (1st)
+;;       (let ((x (car 1st)))
+;;         (if (null x)
+;;             (summit (cdr 1st))
+;;             (+ x (summit (cdr 1st))))))
+
+;; We need the base case to break recursion function (conditional when the input list is empty). So the correct version is bellow:
+
+(defun summit_rec_new_ver (1st)
+  "Return the sum of all the non-nil elements in a list."
+  (if (null 1st)
+      0
+      (let ((x (car 1st)))
+        (if (null x)
+            (xyz (cdr 1st))
+            (+ 1 (xyz (cdr 1st)))))))
