@@ -93,4 +93,11 @@
 (define (sum-coints p n d q)
   (+ p (* n 5) (* d 10) (* q 25)))
 
+;; Exercise 2.3.3
+;; An old-style movie theater has a simple profit function. Each customer pay $5 per ticket. Every performance costs the theater $20, plus $.5 per attendee. Develop the function total-profit. It consumes the number of attendees (of a show) and produce how much income the attendees produce.
+;; Solution
+;;
+(define (total-profit c)
+  (- (* c 5) 20 (* c 0.5)))
+
 
